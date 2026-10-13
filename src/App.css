@@ -75,9 +75,11 @@ body {
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.02em;
+  text-align: center;
 }
 
 .card__subtitulo {
+  text-align: center;
   margin: 0 0 28px;
   font-size: 0.95rem;
   line-height: 1.5;
@@ -96,27 +98,16 @@ body {
 /* ---------- Logo ---------- */
 .logo {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  justify-content: center; /* centraliza a logo acima do título */
 }
 
-.logo__icone {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 9px;
-  background: var(--cor-primaria);
-  color: #fff;
-  font-weight: 800;
-  font-size: 0.9rem;
-  letter-spacing: -0.02em;
-}
-
-.logo__texto {
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+.logo__imagem {
+  display: block;
+  max-width: 160px; /* ajuste conforme o tamanho da sua logo */
+  max-height: 64px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
 /* ---------- Campos de formulário ---------- */

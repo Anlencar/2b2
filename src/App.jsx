@@ -102,12 +102,20 @@ function CampoSenha({ id, label, value, onChange, erro, autoComplete }) {
   );
 }
 
-// Logotipo da marca
+// Logotipo da marca (somente imagem, centralizada)
+// Coloque seu arquivo em: public/logo.png  (pasta "public" na raiz do projeto)
+// Enquanto o arquivo não existir, a imagem fica oculta (sem ícone quebrado).
 function Logo() {
   return (
     <div className="logo">
-      <span className="logo__icone">2B</span>
-      <span className="logo__texto">2B2</span>
+      <img
+        src="/logo.png"
+        alt="Logotipo da empresa"
+        className="logo__imagem"
+        onError={(e) => {
+          e.currentTarget.style.display = "none";
+        }}
+      />
     </div>
   );
 }
