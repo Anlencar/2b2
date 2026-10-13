@@ -1,18 +1,8 @@
-// App.jsx — 2B2 | Telas de Login e Cadastro de Empresa
-// Substitua o conteúdo do seu src/App.jsx por este arquivo.
-// Certifique-se de que o main.jsx importa o App normalmente e que o App.css está na mesma pasta.
-
 import { useState } from "react";
 import "./App.css";
 
-/* =====================================================
-   FUNÇÕES AUXILIARES (máscaras e validações)
-   ===================================================== */
-
-// Mantém apenas dígitos
 const apenasDigitos = (valor) => valor.replace(/\D/g, "");
 
-// Máscara de CNPJ: 00.000.000/0000-00
 const mascaraCNPJ = (valor) => {
   const d = apenasDigitos(valor).slice(0, 14);
   return d
@@ -22,7 +12,6 @@ const mascaraCNPJ = (valor) => {
     .replace(/(\d{4})(\d)/, "$1-$2");
 };
 
-// Máscara de telefone: (00) 0000-0000 ou (00) 00000-0000
 const mascaraTelefone = (valor) => {
   const d = apenasDigitos(valor).slice(0, 11);
   if (d.length <= 10) {
@@ -33,7 +22,6 @@ const mascaraTelefone = (valor) => {
   return d.replace(/^(\d{2})(\d)/, "($1) $2").replace(/(\d{5})(\d)/, "$1-$2");
 };
 
-// Validação de CNPJ (dígitos verificadores)
 const cnpjValido = (cnpj) => {
   const d = apenasDigitos(cnpj);
   if (d.length !== 14 || /^(\d)\1+$/.test(d)) return false;
@@ -55,14 +43,8 @@ const cnpjValido = (cnpj) => {
   return d1 === Number(d[12]) && d2 === Number(d[13]);
 };
 
-// Validação simples de e-mail
 const emailValido = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-/* =====================================================
-   COMPONENTES REUTILIZÁVEIS
-   ===================================================== */
-
-// Campo de formulário com label e mensagem de erro
 function Campo({ id, label, erro, children }) {
   return (
     <div className={`campo ${erro ? "campo--erro" : ""}`}>
@@ -73,7 +55,6 @@ function Campo({ id, label, erro, children }) {
   );
 }
 
-// Campo de senha com botão para mostrar/ocultar
 function CampoSenha({ id, label, value, onChange, erro, autoComplete }) {
   const [visivel, setVisivel] = useState(false);
 
@@ -102,9 +83,6 @@ function CampoSenha({ id, label, value, onChange, erro, autoComplete }) {
   );
 }
 
-// Logotipo da marca (somente imagem, centralizada)
-// Coloque seu arquivo em: public/logo.png  (pasta "public" na raiz do projeto)
-// Enquanto o arquivo não existir, a imagem fica oculta (sem ícone quebrado).
 function Logo() {
   return (
     <div className="logo">
@@ -120,9 +98,6 @@ function Logo() {
   );
 }
 
-/* =====================================================
-   TELA DE LOGIN
-   ===================================================== */
 function TelaLogin({ irParaCadastro }) {
   const [form, setForm] = useState({ email: "", senha: "" });
   const [erros, setErros] = useState({});
@@ -131,7 +106,7 @@ function TelaLogin({ irParaCadastro }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    setErros((prev) => ({ ...prev, [name]: undefined })); // limpa o erro ao digitar
+    setErros((prev) => ({ ...prev, [name]: undefined }));
   };
 
   const validar = () => {
@@ -148,8 +123,6 @@ function TelaLogin({ irParaCadastro }) {
     if (Object.keys(novosErros).length > 0) return;
 
     setEnviando(true);
-    // TODO: substituir pela chamada real à sua API de autenticação
-    // ex.: await fetch("/api/auth/login", { method: "POST", body: JSON.stringify(form) })
     await new Promise((r) => setTimeout(r, 800));
     setEnviando(false);
     console.log("Login enviado:", form);
@@ -157,7 +130,6 @@ function TelaLogin({ irParaCadastro }) {
   };
 
   const handleEsqueceuSenha = () => {
-    // TODO: navegar para o fluxo de recuperação de senha
     alert("Fluxo de recuperação de senha ainda não implementado.");
   };
 
@@ -216,9 +188,6 @@ function TelaLogin({ irParaCadastro }) {
   );
 }
 
-/* =====================================================
-   TELA DE CADASTRO DE EMPRESA
-   ===================================================== */
 function TelaCadastro({ irParaLogin }) {
   const [form, setForm] = useState({
     razaoSocial: "",
@@ -235,7 +204,6 @@ function TelaCadastro({ irParaLogin }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Aplica máscara nos campos que precisam
     let novoValor = value;
     if (name === "cnpj") novoValor = mascaraCNPJ(value);
     if (name === "telefone") novoValor = mascaraTelefone(value);
@@ -266,8 +234,6 @@ function TelaCadastro({ irParaLogin }) {
     if (Object.keys(novosErros).length > 0) return;
 
     setEnviando(true);
-    // TODO: substituir pela chamada real à sua API de cadastro
-    // Dica: não envie "confirmarSenha" ao backend.
     const { confirmarSenha, ...payload } = form;
     await new Promise((r) => setTimeout(r, 1000));
     setEnviando(false);
@@ -297,7 +263,6 @@ function TelaCadastro({ irParaLogin }) {
           />
         </Campo>
 
-        {/* Duas colunas no desktop, uma no mobile */}
         <div className="grade">
           <Campo id="cnpj" label="CNPJ" erro={erros.cnpj}>
             <input
@@ -382,11 +347,7 @@ function TelaCadastro({ irParaLogin }) {
   );
 }
 
-/* =====================================================
-   COMPONENTE PRINCIPAL — alterna entre as telas
-   ===================================================== */
 export default function App() {
-  // "login" | "cadastro"
   const [tela, setTela] = useState("login");
 
   return (
